@@ -11,6 +11,7 @@ pipeline {
         stage('Install') {
             steps {
                 sh '''
+                    curl -LsSf https://astral.sh/uv/install.sh | sh
                     uv venv .venv
                     . .venv/bin/activate
                     uv pip install --system -r requirements.txt

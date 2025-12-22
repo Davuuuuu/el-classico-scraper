@@ -18,7 +18,7 @@ pipeline {
                     '''
                 }
             }
-        },
+        }
         stage('Cleanup') {
           steps {
             clean_up_docker()

@@ -49,6 +49,7 @@ try:
         f.write("\n".join(food_items_over_10))
     print("\n\nSaved to food_items.txt")
     print("\n\nSaved to el_clasico_food_items_over_10.txt")
+    print("SLACK_WEBHOOK_URL")
 
 except Exception as e:
     print(f"Error: {e}")

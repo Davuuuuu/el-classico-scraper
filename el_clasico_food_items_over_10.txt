@@ -1,16 +1,16 @@
-10,50 €
-11,00 €
-11,50 €
-11,50 €
-12,00 €
-12,00 €
-12,00 €
-12,00 €
-14,00 €
-14,40 €
-15,40 €
-15,40 €
-16,00 €
-17,00 €
-17,40 €
-20,00 €
+Klasika pelati, sir, šunka, gobe (1,7) 10,50 €
+Kmečka pelati, sir, domača šunka, ogrska salama, čebula, kisla smetana (1,7) 11,00 €
+Kras pelati, sir, pršut (1,7) 11,50 €
+Vegi pelati, sir, bučke, paprika, paradižnik, koruza, sveže gobe (1,7) 11,50 €
+Piščančji zrezek v smetanovi omaki, ocvrti njoki (1,3,7,9) 12,00 €
+Piščančji zrezek v naravni omaki z dimljenim sirom, dušen riž (1,7,9) 12,00 €
+Sticky fingers s sladko chili omako, pommes frites (1,3) 12,00 €
+Tuna pelati, sir, tuna, čebula, koruza (1,4,7) 12,00 €
+Morska pelati, sir, lignji, gamberi, česen (1,7,14) 14,00 €
+Ocvrti lignji, tatarska omaka, pommes frites (1,3,7,9,12,14) 14,40 €
+Lignji na žaru, blitva s krompirjem (14) 15,40 €
+Rezanci z gamberi in tartufi (1,2,3) 15,40 €
+Berivka z ramsteakom, jajcem, češnjevim paradižnikom in feta sirom, balzamični preliv, bučno olje (3,7) 16,00 €
+Biftek na žaru s pršutom, jajcem in feta sirom, pekarski krompir iz pečice, solata (1,3,7,9) 17,00 €
+File tune na žaru z rižem in zelenjavo (4) 17,40 €
+File kovača na žaru v masleni omaki s popečeno zelenjavo in mladim krompirjem (4,9,12) 20,00 €

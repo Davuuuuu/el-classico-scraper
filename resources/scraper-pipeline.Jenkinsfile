@@ -8,6 +8,15 @@ pipeline {
     agent { label 'docker_comland' }
     
     stages {
+        stage('Install') {
+            steps {
+                sh '''
+                    uv venv .venv
+                    . .venv/bin/activate
+                    uv pip install --system -r requirements.txt
+                '''
+            }
+        }
         stage('Launch scraper') {
             steps {
                 withCredentials([

@@ -1,28 +1,54 @@
 import requests
 from bs4 import BeautifulSoup
+import re
 
 url = "https://el-clasico.si/jedilnik-1/"
+headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-}
-
-response = requests.get(url, headers=headers)
-
-if response.status_code == 200:
+try:
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+    
     soup = BeautifulSoup(response.text, "html.parser")
+    lines = [line.strip() for line in soup.get_text(separator="").split("\n") if line.strip()]
+    food_items_over_10 = []
+    food_items = []
+    for line in lines:
+        if "€" in line:
+            cleaned_line = line.replace(":", "").strip()
+            price_match = re.search(r"([\d,]+ ?\d*) ?€", line)
+            if price_match:
+                price_str = price_match.group(1).replace(" ", "").replace(",", ".")
+                price = float(price_str)
+                if price <= 10.00:  
+                    cleaned_line = line.replace(":", "").strip()
+                    food_items.append(cleaned_line)
+                elif price > 10.00:
+                    food_items_over_10.append(cleaned_line)
     
-    content = soup.find("pre")
-    if content:
-        menu_text = content.get_text(strip=True)
-    else:
-        menu_text = soup.get_text(strip=True)
+    def cena(item):
+        price_match = re.search(r"([\d,]+ ?\d*) ?€", item)
+        if price_match:
+            price_str = price_match.group(1).replace(" ", "").replace(",", ".")
+            return float(price_str)
+        return 0
     
-    print(menu_text) 
+    food_items.sort(key=cena)
+    food_items_over_10.sort(key=cena)
     
-    with open("el_clasico_menu.txt", "w", encoding="utf-8") as f:
-        f.write(menu_text)
-    
-    print("Menu saved to el_clasico_menu.txt")
-else:
-    print("Error:", response.status_code)
+
+
+
+    print("\n".join(food_items))
+    print()
+    print()
+    print("\n".join(food_items_over_10))
+    with open("food_items", "w", encoding="utf-8") as f:
+        f.write("\n".join(food_items))
+    with open("el_clasico_food_items_over_10.txt", "w", encoding="utf-8") as f:
+        f.write("\n".join(food_items_over_10))
+    print("\n\nSaved to food_items.txt")
+    print("\n\nSaved to el_clasico_food_items_over_10.txt")
+
+except Exception as e:
+    print(f"Error: {e}")

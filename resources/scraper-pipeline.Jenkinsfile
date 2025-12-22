@@ -21,7 +21,9 @@ pipeline {
         }
         stage('Cleanup') {
           steps {
-            clean_up_docker()
+            script{
+                clean_up_docker()
+                }
           }
         }
     }

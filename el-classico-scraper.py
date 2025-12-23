@@ -145,7 +145,7 @@ try:
             "blocks": [table_block]
         }
     ]
-    }
+    }.encode('utf-8')
     headers = {
       'Content-Type': 'application/json'
     }

@@ -1,16 +1,36 @@
+import json
 import sys
-import requests
 from bs4 import BeautifulSoup
 import re 
+import pycurl
+from io import BytesIO
+
+
+buffer = BytesIO()
+c = pycurl.Curl()
+c.setopt(c.URL, "https://el-clasico.si/jedilnik-1/")
+c.setopt(c.WRITEDATA, buffer)
+c.perform()
+c.close()
+
+body = buffer.getvalue()
+print(body.decode('utf-8'))
 
 url = "https://el-clasico.si/jedilnik-1/"
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
 
+c.setopt(c.URL, url)
+c.setopt(c.WRITEDATA, buffer)
+c.setopt(c.USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
+c.setopt(c.FOLLOWLOCATION, True)
+c.setopt(c.TIMEOUT, 30)
+
 try:
-    response = requests.get(url, headers=headers)
-    response.raise_for_status()
+    c.perform()
+    status_code = c.getinfo(c.RESPONSE_CODE)
+    c.close()
     
-    soup = BeautifulSoup(response.text, "html.parser")
+    soup = BeautifulSoup(body, "html.parser")
     lines = [line.strip() for line in soup.get_text(separator="").split("\n") if line.strip()]
     food_items_over_10 = []
     food_items = []
@@ -52,22 +72,33 @@ try:
     print("\n\nSaved to el_clasico_food_items_over_10.txt")
       
 
-    payload = {
-     "channel": "#el-classico-scraper",
-     "text": "test message"
-    }
-
-    headers = {
-      'Content-Type': 'application/json'
-    }
-
-
-    response = requests.post(
-      url={sys.argv[1]},
-      headers=headers,
-      json=payload,
-      timeout=60
+    message = (
+        "*Danes v El Clasicu (23.12.2025)* 🍽️\n\n"
+        "*Do 10 €:*\n" + "\n".join([f"• {item}" for item in food_items]) + "\n\n"
+        "*Nad 10 €:*\n" + "\n".join([f"• {item}" for item in food_items_over_10]) + "\n\n"
+        "Juha ali sladica: 2,50 €\n"
+        "Lep dan in dober tek! 😋"
     )
+
+    payload = json.dumps({
+        "text": message
+    }).encode('utf-8')
+
+    buffer_post = BytesIO()
+    c_post = pycurl.Curl()
+    c_post.setopt(c_post.URL, sys.argv[1])  
+    c_post.setopt(c_post.POSTFIELDS, payload)
+    c_post.setopt(c_post.HTTPHEADER, [
+        "Content-Type: application/json",
+        f"Content-Length: {len(payload)}"
+    ])
+    c_post.setopt(c_post.WRITEDATA, buffer_post)
+    c_post.setopt(c_post.USERAGENT, "Mozilla/5.0 (compatible; Python pycurl)")
+    c_post.setopt(c_post.TIMEOUT, 30)
+
+    c_post.perform()
+    post_status = c_post.getinfo(c_post.RESPONSE_CODE)
+    c_post.close()
 
     print(f"SLACK_WEBHOOK_URL: {sys.argv[1]}")
     

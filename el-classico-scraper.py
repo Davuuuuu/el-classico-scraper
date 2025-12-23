@@ -69,7 +69,8 @@ try:
       timeout=60
     )
 
-    print(sys.argv[1])
+    print(f"SLACK_WEBHOOK_URL: {sys.argv[1]}")
+    
 
 
 except Exception as e:

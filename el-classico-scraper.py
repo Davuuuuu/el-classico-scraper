@@ -138,9 +138,16 @@ try:
 }
     message = f"🍽️ *DNEVNI JEDILNIK EL CLASICO – {datum_naslov}* 🍕\n\n\n\n*Dober tek!* 😋"
 
-    # 2. Payload kot JSON string → pretvori v BYTES
-    payload_json = json.dumps({"text": message})
-    payload = payload_json.encode('utf-8')  # ← KLJUČNO: bytes!
+    
+    payload = {
+     "channel": "el-clasico-scraper",
+     "text": "message"
+    }
+
+    headers = {
+      'Content-Type': 'application/json'
+    }
+
 
     buffer_post = BytesIO()
     c_post = pycurl.Curl()

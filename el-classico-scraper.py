@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import re
 import json
 import sys
-from prettytable import PrettyTable, MARKDOWN
+from prettytable import PrettyTable
 from datetime import datetime
 
 url_jedilnik = "https://el-clasico.si/jedilnik-1/"
@@ -106,40 +106,41 @@ try:
             cena = ""
         return jed, cena
 
-    tabela_drazje = PrettyTable()
-    tabela_drazje.field_names = ["🍴 Jedi", "💰 Cena"]
-    tabela_drazje.align["🍴 Jedi"] = "l"
-    tabela_drazje.align["💰 Cena"] = "r"
-
-    
-    tabela_ugodne = PrettyTable()
-    tabela_ugodne.field_names = ["🍴 Jedi", "💰 Cena"]
-    tabela_ugodne.align["🍴 Jedi"] = "l"
-    tabela_ugodne.align["💰 Cena"] = "r"
-
+    ugodne_tabela = "*💰 UGODNE MOŽNOSTI (do 10 € ali manj)*\n"
+    ugodne_tabela += "| Jedi                                      | Cena     |\n"
+    ugodne_tabela += "|-------------------------------------------|----------|\n"
     for item in food_items:
-        jed, cena = loci_jed_cena(item)
-        tabela_ugodne.add_row([jed, cena])
+        if " €" in item:
+            jed, cena = item.rsplit(" €", 1)
+            jed = jed.strip()
+            cena = cena.strip() + " €"
+        else:
+            jed = item.strip()
+            cena = ""
+        ugodne_tabela += f"| {jed:<40} | {cena:>8} |\n"
+    ugodne_tabela += "| Dnevna juha ali sladica                   |  2,50 € |\n\n"
 
-    tabela_ugodne.add_row(["🥣 Dnevna juha ali sladica", "2,50 €"])
-    
-    
+
+    drazje_tabela = "*🍖 GLAVNE IN SPECIALNE JEDI (nad 10 €)*\n"
+    drazje_tabela += "| Jedi                                      | Cena     |\n"
+    drazje_tabela += "|-------------------------------------------|----------|\n"
     for item in food_items_over_10:
-        jed, cena = loci_jed_cena(item)
-        tabela_drazje.add_row([jed, cena])
-
-    tabela_ugodne_md = tabela_ugodne.get_formatted_string(MARKDOWN)
-    tabela_drazje_md = tabela_drazje.get_formatted_string(MARKDOWN)
+        if " €" in item:
+            jed, cena = item.rsplit(" €", 1)
+            jed = jed.strip()
+            cena = cena.strip() + " €"
+        else:
+            jed = item.strip()
+            cena = ""
+        drazje_tabela += f"| {jed:<40} | {cena:>8} |\n"
 
     message = (
-    f"🍽️ *DNEVNI JEDILNIK EL CLASICO – {datum_naslov}* 🍕\n\n"
-    "*💰 UGODNE MOŽNOSTI (do 10 € ali manj)*\n"
-    f"{tabela_ugodne_md}\n\n"
-    "*🍖 GLAVNE IN SPECIALNE JEDI (nad 10 €)*\n"
-    f"{tabela_drazje_md}\n\n"
-    "*Dober tek in lep dan!* 🌟"
-)
-
+        f"🍽️ *DNEVNI JEDILNIK EL CLASICO – {datum_naslov}* 🍕\n\n"
+        f"{ugodne_tabela}"
+        f"{drazje_tabela}\n"
+        "*Dober tek in lep dan!* 🌟"
+    )
+    
     payload = json.dumps({
         "channel": "#el-classico-scraper",
         "text": message}).encode('utf-8')

@@ -96,51 +96,61 @@ try:
 
     datum_naslov = f"{ime_dneva}, {dan_mesec_leto}"
 
-    def loci_jed_cena(item):
-        if " €" in item:
-            deli = item.rsplit(" €", 1)
-            jed = deli[0].strip()
-            cena = deli[1].strip() + " €"
+    def loci_jed_in_ceno(line):
+        match = re.search(r"(\d+[.,]\d{2})", line)
+        if match:
+            cena = match.group(1).replace(",", ".") + " €"
+            jed = re.sub(r"\s*\d+[.,]\d{2}.*", "", line).strip()
+            return jed, cena
         else:
-            jed = item.strip()
-            cena = ""
-        return jed, cena
+            return line.strip(), "?"
+        
+    ugodne = []
+    drazje = []
+    current = "ugodne"
 
+    for line in lines:  # lines iz tvojega soup.get_text()
+        cleaned = line.strip()
+        if not cleaned or "€" not in cleaned:
+            continue
+        if "GLAVNE" in cleaned or "SPECIALNE" in cleaned or "nad 10" in cleaned.lower():
+            current = "drazje"
+            continue
+    
+    jed, cena = loci_jed_in_ceno(cleaned)
+    if current == "ugodne":
+        ugodne.append((jed, cena))
+    else:
+        drazje.append((jed, cena))
+
+    # Dodaj juho/sladico, če manjka
+    ugodne.append(("Dnevna juha ali sladica", "2,50 €"))
+
+    # Sortiraj po ceni (opcionalno)
+    ugodne.sort(key=lambda x: float(x[1].replace(" €", "").replace(",", ".")) if x[1] != "?" else 0)
+    drazje.sort(key=lambda x: float(x[1].replace(" €", "").replace(",", ".")) if x[1] != "?" else 0)
+
+    # Ročne Markdown tabele z dobro poravnavo
     ugodne_tabela = "*💰 UGODNE MOŽNOSTI (do 10 € ali manj)*\n"
-    ugodne_tabela += "| Jedi                                      | Cena     |\n"
-    ugodne_tabela += "|-------------------------------------------|----------|\n"
-    for item in food_items:
-        if " €" in item:
-            jed, cena = item.rsplit(" €", 1)
-            jed = jed.strip()
-            cena = cena.strip() + " €"
-        else:
-            jed = item.strip()
-            cena = ""
-        ugodne_tabela += f"| {jed:<40} | {cena:>8} |\n"
-    ugodne_tabela += "| Dnevna juha ali sladica                   |  2,50 € |\n\n"
-
+    ugodne_tabela += "| Jedi                                                                 | Cena     |\n"
+    ugodne_tabela += "|----------------------------------------------------------------------|----------|\n"
+    for jed, cena in ugodne:
+        ugodne_tabela += f"| {jed:<64} | {cena:>8} |\n"
 
     drazje_tabela = "*🍖 GLAVNE IN SPECIALNE JEDI (nad 10 €)*\n"
-    drazje_tabela += "| Jedi                                      | Cena     |\n"
-    drazje_tabela += "|-------------------------------------------|----------|\n"
-    for item in food_items_over_10:
-        if " €" in item:
-            jed, cena = item.rsplit(" €", 1)
-            jed = jed.strip()
-            cena = cena.strip() + " €"
-        else:
-            jed = item.strip()
-            cena = ""
-        drazje_tabela += f"| {jed:<40} | {cena:>8} |\n"
+    drazje_tabela += "| Jedi                                                                 | Cena     |\n"
+    drazje_tabela += "|----------------------------------------------------------------------|----------|\n"
+    for jed, cena in drazje:
+        drazje_tabela += f"| {jed:<64} | {cena:>8} |\n"
 
+    # Končno sporočilo
     message = (
         f"🍽️ *DNEVNI JEDILNIK EL CLASICO – {datum_naslov}* 🍕\n\n"
-        f"{ugodne_tabela}"
+        f"{ugodne_tabela}\n"
         f"{drazje_tabela}\n"
         "*Dober tek in lep dan!* 🌟"
     )
-    
+
     payload = json.dumps({
         "channel": "#el-classico-scraper",
         "text": message}).encode('utf-8')

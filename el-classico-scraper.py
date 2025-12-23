@@ -83,7 +83,9 @@ try:
     )
 
         # --- POST na Slack ---
-    payload = json.dumps({"text": message}).encode('utf-8')
+    payload = json.dumps({
+        "channel": "#el-classico-scraper",
+        "text": message}).encode('utf-8')
 
     buffer_post = BytesIO()
     c_post = pycurl.Curl()

@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import re
 import json
 import sys
+from prettytable import PrettyTable
 
 url_jedilnik = "https://el-clasico.si/jedilnik-1/"
 slack_webhook_url = "https://hooks.slack.com/services/TVOJ/DEJANSKI/WEBHOOK"  # ← tukaj svoj Slack URL
@@ -76,13 +77,12 @@ try:
 
     
     message = (
-        "*Dnevni jedilnik El Clasico (23.12.2025)* 🍕\n\n"
+        "*Dnevni jedilnik El Clasico {current_date}* 🍕\n\n"
         "*Do 10 €:*\n" + "\n".join([f"• {i}" for i in food_items]) + "\n\n"
         "*Nad 10 €:*\n" + "\n".join([f"• {i}" for i in food_items_over_10]) + "\n\n"
         "Juha ali sladica: 2,50 €\nDober tek! 😋"
     )
 
-        # --- POST na Slack ---
     payload = json.dumps({
         "channel": "#el-classico-scraper",
         "text": message}).encode('utf-8')

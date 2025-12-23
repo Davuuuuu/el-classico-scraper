@@ -136,81 +136,11 @@ try:
         {"align": "right"}    
     ]
 }
-    payload = {
-     "channel": "#el-clasico-scraper",
-     "blocks": [
-            {
-                "type": "table",
-                "column_settings": [
-                    {
-                        "is_wrapped": "true"
-                    },
-                    {
-                        "align": "right"
-                    }
-                ],
-                "rows": [
-                    [
-                        {
-                            "type": "raw_text",
-                            "text": "Header A"
-                        },
-                        {
-                            "type": "raw_text",
-                            "text": "Header B"
-                        }
-                    ],
-                    [
-                        {
-                            "type": "raw_text",
-                            "text": "Data 1A"
-                        },
-                        {
-                            "type": "rich_text",
-                            "elements": [
-                                {
-                                    "type": "rich_text_section",
-                                    "elements": [
-                                        {
-                                            "text": "Data 1B",
-                                            "type": "link",
-                                            "url": "https://slack.com"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
-                    [
-                        {
-                            "type": "raw_text",
-                            "text": "Data 2A"
-                        },
-                        {
-                            "type": "rich_text",
-                            "elements": [
-                                {
-                                    "type": "rich_text_section",
-                                    "elements": [
-                                        {
-                                            "text": "Data 2B",
-                                            "type": "link",
-                                            "url": "https://slack.com"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                ]
-            }
-        ]
-    }
-    headers = {
-      'Content-Type': 'application/json'
-    }
+    message = f"🍽️ *DNEVNI JEDILNIK EL CLASICO – {datum_naslov}* 🍕\n\n\n\n*Dober tek!* 😋"
 
-
+    # 2. Payload kot JSON string → pretvori v BYTES
+    payload_json = json.dumps({"text": message})
+    payload = payload_json.encode('utf-8')  # ← KLJUČNO: bytes!
 
     buffer_post = BytesIO()
     c_post = pycurl.Curl()

@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import re
 import json
 import sys
-from prettytable import PrettyTable
+from prettytable import PrettyTable, MARKDOWN
 from datetime import datetime
 
 url_jedilnik = "https://el-clasico.si/jedilnik-1/"
@@ -96,13 +96,49 @@ try:
 
     datum_naslov = f"{ime_dneva}, {dan_mesec_leto}"
 
+    def loci_jed_cena(item):
+        if " €" in item:
+            deli = item.rsplit(" €", 1)
+            jed = deli[0].strip()
+            cena = deli[1].strip() + " €"
+        else:
+            jed = item.strip()
+            cena = ""
+        return jed, cena
+
+    tabela_drazje = PrettyTable()
+    tabela_drazje.field_names = ["🍴 Jedi", "💰 Cena"]
+    tabela_drazje.align["🍴 Jedi"] = "l"
+    tabela_drazje.align["💰 Cena"] = "r"
+
+    
+    tabela_ugodne = PrettyTable()
+    tabela_ugodne.field_names = ["🍴 Jedi", "💰 Cena"]
+    tabela_ugodne.align["🍴 Jedi"] = "l"
+    tabela_ugodne.align["💰 Cena"] = "r"
+
+    for item in food_items:
+        jed, cena = loci_jed_cena(item)
+        tabela_ugodne.add_row([jed, cena])
+
+    tabela_ugodne.add_row(["🥣 Dnevna juha ali sladica", "2,50 €"])
+    
+    
+    for item in food_items_over_10:
+        jed, cena = loci_jed_cena(item)
+        tabela_drazje.add_row([jed, cena])
+
+    tabela_ugodne_md = tabela_ugodne.get_formatted_string(MARKDOWN)
+    tabela_drazje_md = tabela_drazje.get_formatted_string(MARKDOWN)
 
     message = (
-        f"*Dnevni jedilnik El Clasico za današnji dan {datum_naslov}*🍕\n\n"
-        f"*Do 10 €:*\n" + "\n".join([f"• {i}" for i in food_items]) + "\n\n"
-        f"*Nad 10 €:*\n" + "\n".join([f"• {i}" for i in food_items_over_10]) + "\n\n"
-        f"\nDober tek! 😋"
-    )
+    f"🍽️ *DNEVNI JEDILNIK EL CLASICO – {datum_naslov}* 🍕\n\n"
+    "*💰 UGODNE MOŽNOSTI (do 10 € ali manj)*\n"
+    f"{tabela_ugodne_md}\n\n"
+    "*🍖 GLAVNE IN SPECIALNE JEDI (nad 10 €)*\n"
+    f"{tabela_drazje_md}\n\n"
+    "*Dober tek in lep dan!* 🌟"
+)
 
     payload = json.dumps({
         "channel": "#el-classico-scraper",

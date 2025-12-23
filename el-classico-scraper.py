@@ -1,3 +1,4 @@
+import sys
 import requests
 from bs4 import BeautifulSoup
 import re 
@@ -67,6 +68,9 @@ try:
       json=payload,
       timeout=60
     )
+
+    print(sys.argv[1])
+
 
 except Exception as e:
     print(f"Error: {e}")

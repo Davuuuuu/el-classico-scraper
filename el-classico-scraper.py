@@ -80,13 +80,13 @@ try:
         f.write("\n".join(food_items_over_10))
 
     dnevi_sl = {
-    0: "ponedeljek",
-    1: "torek",
-    2: "sreda",
-    3: "četrtek",
-    4: "petek",
-    5: "sobota",
-    6: "nedelja"
+    0: "PONEDELJEK",
+    1: "TOREK",
+    2: "SREDA",
+    3: "ČETRTEK",
+    4: "PETEK",
+    5: "SOBOTA",
+    6: "NEDELJA"
 }
 
     zdaj = datetime.now()
@@ -106,32 +106,84 @@ try:
             cena = ""
         return jed, cena
 
-    jedi_pod_10 = PrettyTable()
-    jedi_pod_10.field_names = ["🍴 Jedi", "💰 Cena"]
-    for item in food_items:
-        jed, cena = loci_jed_cena(item)
-        jedi_pod_10.add_row([jed, cena])
-
-    jedi_nad_10 = PrettyTable()
-    jedi_nad_10.field_names = ["🍴 Jedi", "💰 Cena"]
-    for item in food_items_over_10:
-        jed, cena = loci_jed_cena(item)
-        jedi_nad_10.add_row([jed, cena])
-
-    jedi_pod_10.align["🍴 Jedi"] = "l"
-    jedi_pod_10.align["💰 Cena"] = "r"
-
-    jedi_pod_10.padding_width = 1        
-    jedi_pod_10.border = True            
-    jedi_pod_10.header = True
-
-    message = (
-        f"🍽️ *DNEVNI JEDILNIK EL CLASICO za {datum_naslov}* 🍕\n\n"
-        f"*Do 10 €: {jedi_pod_10}*\n\n"
-        f"*Nad 10 €: {jedi_nad_10}*\n\n"
-        f"*Dober tek in lep dan!* 🌟"
-    )
+    message = {            
+         "blocks": [
+                {
+                    "type": "header",
+                    "text": {
+                        "type": "plain_text",
+                        "text": f"🍽️ *DNEVNI JEDILNIK EL CLASICO ZA DAN {datum_naslov}* 🍕\n\n",
+                        "emoji": True
+                    },
+                },{
+                    "type": "table",
+                    "column_settings": [
+                        {
+                            "is_wrapped": "true"
+                        },
+                        {
+                            "align": "right"
+                        }
+                    ],
+                    "rows": [
+                        [
+                            {
+                                "type": "raw_text",
+                                "text": "🍴Jedi "
+                            },
+                            {
+                                "type": "raw_text",
+                                "text": "💰Cena "
+                            }
+                        ],
+                        [
+                            {
+                                "type": "raw_text",
+                                "text": "Do 10 €".join([f"• {item}" for item in food_items]) + "\n\n"
+                            },
+                            {
+                                "type": "rich_text",
+                                "elements": [
+                                    {
+                                        "type": "rich_text_section",
+                                        "elements": [
+                                            {
+                                                "text": "Data 1B",
+                                                "type": "link",
+                                                "url": "https://slack.com"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        [
+                            {
+                                "type": "raw_text",
+                                "text": "Data 2A"
+                            },
+                            {
+                                "type": "rich_text",
+                                "elements": [
+                                    {
+                                        "type": "rich_text_section",
+                                        "elements": [
+                                            {
+                                                "text": "Data 2B",
+                                                "type": "link",
+                                                "url": "https://slack.com"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    ]
+                }
+                ]
+            }
     
+        
     payload = json.dumps({
         "channel": "#el-classico-scraper",
         "text": message}).encode('utf-8')

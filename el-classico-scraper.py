@@ -106,22 +106,18 @@ try:
             cena = ""
         return jed, cena
 
-    table = PrettyTable()
-    table.field_names = ["Jed", "Cena (€)"]
-
+    jedi_pod_10 = PrettyTable()
+    jedi_pod_10.field_names = ["🍴 Jedi", "💰 Cena"]
     for item in food_items:
         jed, cena = loci_jed_cena(item)
-        table.add_row([jed, cena])
+        jedi_pod_10.add_row([jed, cena])
 
-    for item in food_items_over_10:
-        jed, cena = loci_jed_cena(item)
-        table.add_row([jed, cena])
 
     message = (
         f"🍽️ *DNEVNI JEDILNIK EL CLASICO za {datum_naslov}* 🍕\n\n"
-        "*Do 10 €:*\n" + "\n".join([f"• {item}" for item in food_items]) + "\n\n"
-        "*Nad 10 €:*\n" + "\n".join([f"• {item}" for item in food_items_over_10]) + "\n\n"
-        "*Dober tek in lep dan!* 🌟"
+        f"*Do 10 €: {jedi_pod_10}*\n\n"
+        f"*Nad 10 €:*\n" + "\n".join([f"• {item}" for item in food_items_over_10]) + "\n\n"
+        f"*Dober tek in lep dan!* 🌟"
     )
     
     payload = json.dumps({

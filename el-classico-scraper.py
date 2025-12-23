@@ -95,7 +95,7 @@ try:
     c_post.setopt(c_post.TIMEOUT, 30)
 
     c_post.perform()
-    post_status = c_post.getinfo(c_post.preform)
+    post_status = c_post.getinfo(c_post.perform)
     c_post.close()
 
     if post_status == 200:

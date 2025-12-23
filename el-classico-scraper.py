@@ -56,8 +56,15 @@ try:
                     print(f"Preskočena neveljavna cena v vrstici: {cleaned}")
                     continue
 
-    food_items.sort(key=lambda x: float(re.search(r"([\d,]+ ?\d*)", x).group(1).replace(" ", "").replace(",", ".")) if re.search(r"([\d,]+ ?\d*)", x) else 0)
-    food_items_over_10.sort(key=lambda x: float(re.search(r"([\d,]+ ?\d*)", x).group(1).replace(" ", "").replace(",", ".")) if re.search(r"([\d,]+ ?\d*)", x) else 0)
+    def get_price(item):
+        match = price_regex.search(item)
+        if match:
+            ps = match.group(1).replace(" ", "").replace(",", ".")
+            try:
+                return float(ps)
+            except ValueError:
+                return 0
+        return 0
 
     print("\nDO 10 €:\n" + "\n".join(food_items))
     print("\nNAD 10 €:\n" + "\n".join(food_items_over_10))

@@ -76,9 +76,26 @@ try:
     with open("el_clasico_over_10.txt", "w", encoding="utf-8") as f:
         f.write("\n".join(food_items_over_10))
 
-    current_date_sl = datetime.now().strftime("%d.%m.%Y")
+    dnevi_sl = {
+    0: "ponedeljek",
+    1: "torek",
+    2: "sreda",
+    3: "četrtek",
+    4: "petek",
+    5: "sobota",
+    6: "nedelja"
+}
+
+    zdaj = datetime.now()
+
+    ime_dneva = dnevi_sl[zdaj.weekday()]       
+    dan_mesec_leto = zdaj.strftime("%d.%m.%Y")         
+
+    datum_naslov = f"{ime_dneva}, {dan_mesec_leto}"
+
+
     message = (
-        f"*Dnevni jedilnik El Clasico* *{current_date_sl}*🍕\n\n"
+        f"*Dnevni jedilnik El Clasico za današnji dan {datum_naslov}*🍕\n\n"
         "*Do 10 €:*\n" + "\n".join([f"• {i}" for i in food_items]) + "\n\n"
         "*Nad 10 €:*\n" + "\n".join([f"• {i}" for i in food_items_over_10]) + "\n\n"
         "\nDober tek! 😋"

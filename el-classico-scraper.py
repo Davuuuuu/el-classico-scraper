@@ -97,6 +97,15 @@ try:
     message = (
         f"*Dnevni jedilnik El Clasico za današnji dan {datum_naslov}*🍕\n\n"
         "*Do 10 €:*\n" + "\n".join([f"• {i}" for i in food_items]) + "\n\n"
+    +
+    {
+        "blocks": [
+        {
+            "type": "divider"
+        }
+        ]    
+    }
+    +
         "*Nad 10 €:*\n" + "\n".join([f"• {i}" for i in food_items_over_10]) + "\n\n"
         "\nDober tek! 😋"
     )

@@ -137,19 +137,19 @@ try:
         {"align": "right"}    
     ]
 }
-    payload_dict = {
-        "text": f"🍽️ *DNEVNI JEDILNIK EL CLASICO – {datum_naslov}* 🍕\nDober tek! 🌟",  
-        "attachments": [
-            {
-                "blocks": [table_block]
-            }
-        ]
-}
-
     payload = {
-        "channel": "#el-clasico-scraper",
+     "channel": "#el-clasico-scraper",
+     "text": f"🍽️ *DNEVNI JEDILNIK EL CLASICO ZA DAN {datum_naslov}* 🍕\nDober tek! 🌟",
+     "attachments": [
+        {
+            "blocks": [table_block]
+        }
+    ]
     }
-    json.dumps(payload_dict).encode('utf-8')
+    headers = {
+      'Content-Type': 'application/json'
+    }
+
 
     buffer_post = BytesIO()
     c_post = pycurl.Curl()

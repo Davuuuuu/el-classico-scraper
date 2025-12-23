@@ -216,6 +216,7 @@ try:
     buffer_post = BytesIO()
     c_post = pycurl.Curl()
 
+<<<<<<< HEAD
 
 
 
@@ -269,6 +270,15 @@ try:
         print(f"Splošna pycurl napaka med perform(): {e}")
     finally:
         c_post.close()
+=======
+    c_post.setopt(c_post.URL, sys.argv[1])
+    c_post.setopt(c_post.POSTFIELDSIZE, len(payload2))
+    c_post.setopt(c_post.POSTFIELDS, payload2)
+    c_post.setopt(c_post.HTTPHEADER, ['Content-Type: application/json'])
+    c_post.setopt(c_post.WRITEDATA, buffer_post)
+    c_post.setopt(c_post.TIMEOUT, 30)
+    
+>>>>>>> 4a8c134836ebc254996cf2adf002adaa097a2e87
 
     try:    
         c_post.perform()

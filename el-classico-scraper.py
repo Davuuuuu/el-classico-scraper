@@ -53,7 +53,7 @@ try:
       
 
     payload = {
-     "channel": "CHANNEL_ID",
+     "channel": "#el-classico-scraper",
      "text": "test message"
     }
 
@@ -63,7 +63,7 @@ try:
 
 
     response = requests.post(
-      url="https://webhook.site/cfb9d233-7ead-4b03-8c98-99724eafae3a",
+      url={sys.argv[1]},
       headers=headers,
       json=payload,
       timeout=60

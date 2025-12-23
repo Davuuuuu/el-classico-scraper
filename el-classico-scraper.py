@@ -118,11 +118,17 @@ try:
         jed, cena = loci_jed_cena(item)
         jedi_nad_10.add_row([jed, cena])
 
+    jedi_pod_10.align["💰 Cena"] = "r"
+    jedi_pod_10.align["💰 Cena"] = "r"
+
+    jedi_pod_10.padding_width = 1        
+    jedi_pod_10.border = True            
+    jedi_pod_10.header = True
 
     message = (
         f"🍽️ *DNEVNI JEDILNIK EL CLASICO za {datum_naslov}* 🍕\n\n"
-        f"*Do 10 €: {jedi_pod_10}*"
-        f"*Nad 10 €: {jedi_nad_10}*"
+        f"*Do 10 €: {jedi_pod_10}*\n\n"
+        f"*Nad 10 €: {jedi_nad_10}*\n\n"
         f"*Dober tek in lep dan!* 🌟"
     )
     

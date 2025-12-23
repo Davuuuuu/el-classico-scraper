@@ -104,6 +104,10 @@ try:
         print(f"Slack napaka: HTTP {post_status}")
         print(buffer_post.getvalue().decode('utf-8'))
 
+    response_body = buffer_post.getvalue().decode('utf-8', errors='ignore')
+    print("Slack odgovor body:", response_body)
+    print("Poslanih bajtov:", c_post.getinfo(pycurl.SIZE_UPLOAD))
+
 except pycurl.error as e:
     print(f"Pycurl napaka: {e}")
 except Exception as e:

@@ -112,11 +112,17 @@ try:
         jed, cena = loci_jed_cena(item)
         jedi_pod_10.add_row([jed, cena])
 
+    jedi_nad_10 = PrettyTable()
+    jedi_nad_10.field_names = ["🍴 Jedi", "💰 Cena"]
+    for item in food_items_over_10:
+        jed, cena = loci_jed_cena(item)
+        jedi_nad_10.add_row([jed, cena])
+
 
     message = (
         f"🍽️ *DNEVNI JEDILNIK EL CLASICO za {datum_naslov}* 🍕\n\n"
-        f"*Do 10 €: {jedi_pod_10}*\n\n"
-        f"*Nad 10 €:*\n" + "\n".join([f"• {item}" for item in food_items_over_10]) + "\n\n"
+        f"*Do 10 €: {jedi_pod_10}*"
+        f"*Nad 10 €: {jedi_nad_10}*"
         f"*Dober tek in lep dan!* 🌟"
     )
     

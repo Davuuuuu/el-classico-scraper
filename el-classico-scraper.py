@@ -211,13 +211,18 @@ try:
       'Content-Type': 'application/json'
     }
 
+    payload2= {
+        "channel": "#el-clasico-scraper",
+        "text": "Test message"
+    }
+
 
     buffer_post = BytesIO()
     c_post = pycurl.Curl()
 
     c_post.setopt(c_post.URL, sys.argv[1])
     c_post.setopt(c_post.POST, True)
-    c_post.setopt(c_post.POSTFIELDS, payload)
+    c_post.setopt(c_post.POSTFIELDS, payload2)
     c_post.setopt(c_post.HTTPHEADER, ['Content-Type: application/json'])
     c_post.setopt(c_post.WRITEDATA, buffer_post)
     c_post.setopt(c_post.TIMEOUT, 30)

@@ -106,38 +106,15 @@ try:
             cena = ""
         return jed, cena
 
-    ugodne_tabela = "*💰 UGODNE MOŽNOSTI (do 10 € ali manj)*\n"
-    ugodne_tabela += "| Jedi                                      | Cena     |\n"
-    ugodne_tabela += "|-------------------------------------------|----------|\n"
-    for item in food_items:
-        if " €" in item:
-            jed, cena = item.rsplit(" €", 1)
-            jed = jed.strip()
-            cena = cena.strip() + " €"
-        else:
-            jed = item.strip()
-            cena = ""
-        ugodne_tabela += f"| {jed:<40} | {cena:>8} |\n"
-    ugodne_tabela += "| Dnevna juha ali sladica                   |  2,50 € |\n\n"
+    
 
 
-    drazje_tabela = "*🍖 GLAVNE IN SPECIALNE JEDI (nad 10 €)*\n"
-    drazje_tabela += "| Jedi                                      | Cena     |\n"
-    drazje_tabela += "|-------------------------------------------|----------|\n"
-    for item in food_items_over_10:
-        if " €" in item:
-            jed, cena = item.rsplit(" €", 1)
-            jed = jed.strip()
-            cena = cena.strip() + " €"
-        else:
-            jed = item.strip()
-            cena = ""
-        drazje_tabela += f"| {jed:<40} | {cena:>8} |\n"
+    
 
     message = (
         f"🍽️ *DNEVNI JEDILNIK EL CLASICO – {datum_naslov}* 🍕\n\n"
-        f"{ugodne_tabela}"
-        f"{drazje_tabela}\n"
+        "*Do 10 €:*\n" + "\n".join([f"• {item}" for item in food_items]) + "\n\n"
+        "*Nad 10 €:*\n" + "\n".join([f"• {item}" for item in food_items_over_10]) + "\n\n"
         "*Dober tek in lep dan!* 🌟"
     )
     

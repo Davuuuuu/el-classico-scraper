@@ -106,87 +106,48 @@ try:
             cena = ""
         return jed, cena
 
-    message = {            
-         "blocks": [
-                {
-                    "type": "header",
-                    "text": {
-                        "type": "plain_text",
-                        "text": f"🍽️ *DNEVNI JEDILNIK EL CLASICO ZA DAN {datum_naslov}* 🍕\n\n",
-                        "emoji": True
-                    },
-                },{
-                    "type": "table",
-                    "column_settings": [
-                        {
-                            "is_wrapped": "true"
-                        },
-                        {
-                            "align": "right"
-                        }
-                    ],
-                    "rows": [
-                        [
-                            {
-                                "type": "raw_text",
-                                "text": "🍴Jedi "
-                            },
-                            {
-                                "type": "raw_text",
-                                "text": "💰Cena "
-                            }
-                        ],
-                        [
-                            {
-                                "type": "raw_text",
-                                "text": "Do 10 €".join([f"• {item}" for item in food_items]) + "\n\n"
-                            },
-                            {
-                                "type": "rich_text",
-                                "elements": [
-                                    {
-                                        "type": "rich_text_section",
-                                        "elements": [
-                                            {
-                                                "text": "Data 1B",
-                                                "type": "link",
-                                                "url": "https://slack.com"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ],
-                        [
-                            {
-                                "type": "raw_text",
-                                "text": "Data 2A"
-                            },
-                            {
-                                "type": "rich_text",
-                                "elements": [
-                                    {
-                                        "type": "rich_text_section",
-                                        "elements": [
-                                            {
-                                                "text": "Data 2B",
-                                                "type": "link",
-                                                "url": "https://slack.com"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    ]
-                }
-                ]
+    rows = []
+
+
+    rows.append([
+        {"type": "raw_text", "text": "🍴 Jedi"},
+        {"type": "raw_text", "text": "💰 Cena"}
+    ])
+
+    # Dodaj ugodne jedi
+    for item in food_items:
+        jed, cena = loci_jed_cena(item)
+        rows.append([
+            {"type": "raw_text", "text": jed},
+            {"type": "raw_text", "text": cena}
+        ])
+
+    for item in food_items_over_10:
+        jed, cena = loci_jed_cena(item)
+        rows.append([
+            {"type": "raw_text", "text": jed},
+            {"type": "raw_text", "text": cena}
+        ])
+
+    table_block = {
+    "type": "table",
+    "rows": rows,
+    "column_settings": [
+        {"is_wrapped": True},  
+        {"align": "right"}    
+    ]
+}
+    payload_dict = {
+        "channel": "#el-clasico-scraper",
+        "text": f"🍽️ *DNEVNI JEDILNIK EL CLASICO – {datum_naslov}* 🍕\nDober tek! 🌟",  # fallback text
+        "attachments": [
+            {
+                "blocks": [table_block]
             }
-    
-        
-    payload = json.dumps({
-        "channel": "#el-classico-scraper",
-        "text": message}).encode('utf-8')
+        ]
+}
+
+    payload = json.dumps(payload_dict).encode('utf-8')
 
     buffer_post = BytesIO()
     c_post = pycurl.Curl()

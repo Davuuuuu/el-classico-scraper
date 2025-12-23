@@ -112,7 +112,7 @@ try:
     
 
     message = (
-        f"🍽️ *DNEVNI JEDILNIK EL CLASICO – {datum_naslov}* 🍕\n\n"
+        f"🍽️ *DNEVNI JEDILNIK EL CLASICO za {datum_naslov}* 🍕\n\n"
         "*Do 10 €:*\n" + "\n".join([f"• {item}" for item in food_items]) + "\n\n"
         "*Nad 10 €:*\n" + "\n".join([f"• {item}" for item in food_items_over_10]) + "\n\n"
         "*Dober tek in lep dan!* 🌟"

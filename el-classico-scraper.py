@@ -138,8 +138,7 @@ try:
     ]
 }
     payload_dict = {
-        "channel": "#el-clasico-scraper",
-        "text": f"🍽️ *DNEVNI JEDILNIK EL CLASICO – {datum_naslov}* 🍕\nDober tek! 🌟",  # fallback text
+        "text": f"🍽️ *DNEVNI JEDILNIK EL CLASICO – {datum_naslov}* 🍕\nDober tek! 🌟",  
         "attachments": [
             {
                 "blocks": [table_block]
@@ -147,7 +146,10 @@ try:
         ]
 }
 
-    payload = json.dumps(payload_dict).encode('utf-8')
+    payload = {
+        "channel": "#el-clasico-scraper",
+    }
+    json.dumps(payload_dict).encode('utf-8')
 
     buffer_post = BytesIO()
     c_post = pycurl.Curl()

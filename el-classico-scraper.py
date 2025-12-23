@@ -37,17 +37,24 @@ try:
     food_items = []
     food_items_over_10 = []
 
+    price_regex = re.compile(r"(\d+(?:[ ,]?\d+)*) ?€")
+
     for line in lines:
         if "€" in line:
-            cleaned = line.replace(":", "").strip()
-            price_match = re.search(r"([\d,]+ ?\d*) ?€", line)
-            if price_match:
-                price_str = price_match.group(1).replace(" ", "").replace(",", ".")
-                price = float(price_str)
-                if price <= 10.00:
-                    food_items.append(cleaned)
-                else:
-                    food_items_over_10.append(cleaned)
+            cleaned = line.strip()
+            match = price_regex.search(line)
+            if match:
+                price_str_raw = match.group(1)
+                price_str = price_str_raw.replace(" ", "").replace(",", ".")
+                try:
+                    price = float(price_str)
+                    if price <= 10.00:
+                        food_items.append(cleaned)
+                    else:
+                        food_items_over_10.append(cleaned)
+                except ValueError:
+                    print(f"Preskočena neveljavna cena v vrstici: {cleaned}")
+                    continue
 
     food_items.sort(key=lambda x: float(re.search(r"([\d,]+ ?\d*)", x).group(1).replace(" ", "").replace(",", ".")) if re.search(r"([\d,]+ ?\d*)", x) else 0)
     food_items_over_10.sort(key=lambda x: float(re.search(r"([\d,]+ ?\d*)", x).group(1).replace(" ", "").replace(",", ".")) if re.search(r"([\d,]+ ?\d*)", x) else 0)

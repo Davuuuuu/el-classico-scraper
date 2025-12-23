@@ -104,33 +104,6 @@ try:
         print(f"Slack napaka: HTTP {post_status}")
         print(buffer_post.getvalue().decode('utf-8'))
 
-    c_post.perform()
-
-    # Popravljene konstante za starejše pycurl verzije
-    post_status = c_post.getinfo(pycurl.RESPONSE_CODE)
-    uploaded = c_post.getinfo(pycurl.SIZE_UPLOAD)      # brez _T !
-    downloaded = c_post.getinfo(pycurl.SIZE_DOWNLOAD)  # brez _T !
-    content_type = c_post.getinfo(pycurl.CONTENT_TYPE)
-    effective_url = c_post.getinfo(pycurl.EFFECTIVE_URL)
-    total_time = c_post.getinfo(pycurl.TOTAL_TIME)
-
-    print("Slack POST debug:")
-    print(f"  HTTP Status: {post_status}")
-    print(f"  Poslanih bajtov (payload): {uploaded}")
-    print(f"  Prejetih bajtov (odgovor): {downloaded}")
-    print(f"  Content-Type: {content_type}")
-    print(f"  Končni URL: {effective_url}")
-    print(f"  Čas zahteve: {total_time:.2f} sekund")
-    print(f"  Odgovor body: '{buffer_post.getvalue().decode('utf-8', errors='ignore')}'")
-
-    if post_status == 200 and uploaded > 100:  # payload je vsaj nekaj bajtov
-        print("Pošiljanje je TEHNIČNO uspelo – sporočilo bi moralo priti v Slack.")
-        print("   Če ga NI: preveri, v KATERI KANAL je vezan webhook (v Slack Apps → Incoming Webhooks)!")
-    else:
-        print("Problem pri pošiljanju (payload ni poslan ali narobe).")
-
-    c_post.close()
-
 except pycurl.error as e:
     print(f"Pycurl napaka: {e}")
 except Exception as e:

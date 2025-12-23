@@ -139,13 +139,74 @@ try:
 }
     payload = {
      "channel": "#el-clasico-scraper",
-     "text": f"🍽️ *DNEVNI JEDILNIK EL CLASICO ZA DAN {datum_naslov}* 🍕\nDober tek! 🌟",
-     "attachments": [
-        {
-            "blocks": [table_block]
-        }
-    ]
-    }.encode('utf-8')
+     "blocks": [
+            {
+                "type": "table",
+                "column_settings": [
+                    {
+                        "is_wrapped": "true"
+                    },
+                    {
+                        "align": "right"
+                    }
+                ],
+                "rows": [
+                    [
+                        {
+                            "type": "raw_text",
+                            "text": "Header A"
+                        },
+                        {
+                            "type": "raw_text",
+                            "text": "Header B"
+                        }
+                    ],
+                    [
+                        {
+                            "type": "raw_text",
+                            "text": "Data 1A"
+                        },
+                        {
+                            "type": "rich_text",
+                            "elements": [
+                                {
+                                    "type": "rich_text_section",
+                                    "elements": [
+                                        {
+                                            "text": "Data 1B",
+                                            "type": "link",
+                                            "url": "https://slack.com"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    [
+                        {
+                            "type": "raw_text",
+                            "text": "Data 2A"
+                        },
+                        {
+                            "type": "rich_text",
+                            "elements": [
+                                {
+                                    "type": "rich_text_section",
+                                    "elements": [
+                                        {
+                                            "text": "Data 2B",
+                                            "type": "link",
+                                            "url": "https://slack.com"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                ]
+            }
+        ]
+    }
     headers = {
       'Content-Type': 'application/json'
     }

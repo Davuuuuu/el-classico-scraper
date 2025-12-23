@@ -12,9 +12,10 @@ pipeline {
             steps {
                 sh '''
                     curl -LsSf https://astral.sh/uv/install.sh | sh
+                    export PATH="$HOME/.local/bin:$PATH"
                     uv venv .venv
                     . .venv/bin/activate
-                    uv pip install --system -r requirements.txt
+                    uv pip install -r requirements.txt
                 '''
             }
         }
@@ -24,6 +25,7 @@ pipeline {
                     string(credentialsId: 'SLACK_WEBHOOK_URL', variable: 'SLACK_WEBHOOK_URL')
                 ]) {
                     sh '''
+                        . .venv/bin/activate
                         python el-classico-scraper.py "${SLACK_WEBHOOK_URL}"
                     '''
                 }

@@ -106,10 +106,16 @@ try:
             cena = ""
         return jed, cena
 
-    
+    table = PrettyTable()
+    table.field_names = ["Jed", "Cena (€)"]
 
+    for item in food_items:
+        jed, cena = loci_jed_cena(item)
+        table.add_row([jed, cena])
 
-    
+    for item in food_items_over_10:
+        jed, cena = loci_jed_cena(item)
+        table.add_row([jed, cena])
 
     message = (
         f"🍽️ *DNEVNI JEDILNIK EL CLASICO za {datum_naslov}* 🍕\n\n"

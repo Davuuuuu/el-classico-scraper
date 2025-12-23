@@ -82,6 +82,7 @@ try:
         "Juha ali sladica: 2,50 €\nDober tek! 😋"
     )
 
+        # --- POST na Slack ---
     payload = json.dumps({"text": message}).encode('utf-8')
 
     buffer_post = BytesIO()
@@ -94,19 +95,36 @@ try:
     c_post.setopt(c_post.WRITEDATA, buffer_post)
     c_post.setopt(c_post.TIMEOUT, 30)
 
-    c_post.perform()
-    post_status = c_post.getinfo(c_post.RESPONSE_CODE)
-    c_post.close()
+    try:
+        c_post.perform()
 
-    if post_status == 200:
-        print("Sporočilo uspešno poslano na Slack!")
-    else:
-        print(f"Slack napaka: HTTP {post_status}")
-        print(buffer_post.getvalue().decode('utf-8'))
+        post_status = c_post.getinfo(pycurl.RESPONSE_CODE)
+        uploaded = c_post.getinfo(pycurl.SIZE_UPLOAD)        
+        downloaded = c_post.getinfo(pycurl.SIZE_DOWNLOAD)
+        content_type = c_post.getinfo(pycurl.CONTENT_TYPE)
+        effective_url = c_post.getinfo(pycurl.EFFECTIVE_URL)
+        total_time = c_post.getinfo(pycurl.TOTAL_TIME)
 
-    response_body = buffer_post.getvalue().decode('utf-8', errors='ignore')
-    print("Slack odgovor body:", response_body)
-    print("Poslanih bajtov:", c_post.getinfo(pycurl.SIZE_UPLOAD))
+        response_body = buffer_post.getvalue().decode('utf-8', errors='ignore')
+
+        print("Slack POST debug:")
+        print(f"  HTTP Status: {post_status}")
+        print(f"  Poslanih bajtov: {uploaded}")
+        print(f"  Prejetih bajtov: {downloaded}")
+        print(f"  Content-Type: {content_type}")
+        print(f"  Končni URL: {effective_url}")
+        print(f"  Čas: {total_time:.2f}s")
+        print(f"  Odgovor body: '{response_body}'")
+
+        if post_status == 200 and uploaded > 100:
+            print("Tehnično uspešno poslano – če sporočilo ne pride, ustvari NOV webhook in izberi PRAVI kanal!")
+        else:
+            print("Problem pri pošiljanju (payload ni poslan pravilno).")
+
+    except pycurl.error as e:
+        print(f"Pycurl POST napaka: {e}")
+    finally:
+        c_post.close()
 
 except pycurl.error as e:
     print(f"Pycurl napaka: {e}")

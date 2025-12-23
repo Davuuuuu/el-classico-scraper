@@ -220,20 +220,15 @@ try:
     buffer_post = BytesIO()
     c_post = pycurl.Curl()
 
+    c_post.setopt(c_post.URL, sys.argv[1])
+    c_post.setopt(c_post.POSTFIELDSIZE, len(payload))
+    c_post.setopt(c_post.POSTFIELDS, payload2)
+    c_post.setopt(c_post.HTTPHEADER, ['Content-Type: application/json'])
+    c_post.setopt(c_post.WRITEDATA, buffer_post)
+    c_post.setopt(c_post.TIMEOUT, 30)
     
 
-    try:
-        
-        c_post.setopt(c_post.URL, sys.argv[1])
-        c_post.setopt(c_post.POST, True)
-        c_post.setopt(c_post.POSTFIELDS, payload2)
-        c_post.setopt(c_post.HTTPHEADER, ['Content-Type: application/json'])
-        c_post.setopt(c_post.WRITEDATA, buffer_post)
-        c_post.setopt(c_post.TIMEOUT, 30)
-        
-        
-        
-        
+    try:    
         c_post.perform()
 
         post_status = c_post.getinfo(pycurl.RESPONSE_CODE)

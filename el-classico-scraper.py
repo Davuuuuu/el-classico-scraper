@@ -67,8 +67,9 @@ try:
             except ValueError:
                 return 0
         return 0
-    food_items.sort(key=lambda x: float(re.search(r"([\d,]+ ?\d*)", x).group(1).replace(" ", "").replace(",", ".")) if re.search(r"([\d,]+ ?\d*)", x) else 0)
-    food_items_over_10.sort(key=lambda x: float(re.search(r"([\d,]+ ?\d*)", x).group(1).replace(" ", "").replace(",", ".")) if re.search(r"([\d,]+ ?\d*)", x) else 0)
+   
+    food_items.sort(key=get_price)
+    food_items_over_10.sort(key=get_price)
 
     print("\nDO 10 €:\n" + "\n".join(food_items))
     print("\nNAD 10 €:\n" + "\n".join(food_items_over_10))

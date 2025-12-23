@@ -96,7 +96,7 @@ try:
 
     message = (
         f"*Dnevni jedilnik El Clasico za današnji dan {datum_naslov}*🍕\n\n"
-        f"*Do 10 €:*\n" + "\n".join([f"• {i}" for i in food_items]) + """\n\n   {
+        f"*Do 10 €:*\n" + "\n".join([f"• {i}" for i in food_items]) + f"""\n\n   {
         "blocks": [
         {
             "type": "divider"

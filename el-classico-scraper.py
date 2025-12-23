@@ -118,7 +118,7 @@ try:
         jed, cena = loci_jed_cena(item)
         jedi_nad_10.add_row([jed, cena])
 
-    jedi_pod_10.align["💰 Cena"] = "r"
+    jedi_pod_10.align["🍴 Jedi"] = "l"
     jedi_pod_10.align["💰 Cena"] = "r"
 
     jedi_pod_10.padding_width = 1        

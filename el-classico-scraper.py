@@ -5,6 +5,7 @@ import re
 import json
 import sys
 from prettytable import PrettyTable
+from datetime import datetime
 
 url_jedilnik = "https://el-clasico.si/jedilnik-1/"
 slack_webhook_url = "https://hooks.slack.com/services/TVOJ/DEJANSKI/WEBHOOK"  # ← tukaj svoj Slack URL
@@ -75,9 +76,9 @@ try:
     with open("el_clasico_over_10.txt", "w", encoding="utf-8") as f:
         f.write("\n".join(food_items_over_10))
 
-    
+    current_date_sl = datetime.now().strftime("%d.%m.%Y")
     message = (
-        "*Dnevni jedilnik El Clasico*{current_date} 🍕\n\n"
+        "*Dnevni jedilnik El Clasico*{current_date_sl} 🍕\n\n"
         "*Do 10 €:*\n" + "\n".join([f"• {i}" for i in food_items]) + "\n\n"
         "*Nad 10 €:*\n" + "\n".join([f"• {i}" for i in food_items_over_10]) + "\n\n"
         "Juha ali sladica: 2,50 €\nDober tek! 😋"

@@ -215,62 +215,13 @@ try:
     buffer_post = BytesIO()
     c_post = pycurl.Curl()
 
-    try:
-        try:
-            c_post.setopt(c_post.URL, slack_webhook_url)
-        except pycurl.error as e:
-            print(f"Napaka pri setopt(URL): {e}")
-
-        try:
-            c_post.setopt(c_post.POST, True)
-        except pycurl.error as e:
-            print(f"Napaka pri setopt(POST): {e}")
-
-        try:
-            c_post.setopt(c_post.POSTFIELDS, payload)
-        except pycurl.error as e:
-            print(f"Napaka pri setopt(POSTFIELDS): {e} – preveri, če je payload bytes (trenutno {type(payload)})")
-
-        try:
-            c_post.setopt(c_post.HTTPHEADER, ["Content-Type: application/json"])
-        except pycurl.error as e:
-            print(f"Napaka pri setopt(HTTPHEADER): {e}")
-
-        try:
-            c_post.setopt(c_post.WRITEDATA, buffer_post)
-        except pycurl.error as e:
-            print(f"Napaka pri setopt(WRITEDATA): {e}")
-
-        try:
-            c_post.setopt(c_post.TIMEOUT, 30)
-        except pycurl.error as e:
-            print(f"Napaka pri setopt(TIMEOUT): {e}")
-
-        c_post.perform()
-
-        response_body = buffer_post.getvalue().decode('utf-8', errors='ignore')
-        post_status = c_post.getinfo(pycurl.RESPONSE_CODE)
-        uploaded = c_post.getinfo(pycurl.SIZE_UPLOAD)
-
-        print(f"Slack status: {post_status}")
-        print(f"Poslano bajtov: {uploaded}")
-        print(f"Odgovor: {response_body}")
-
-        if post_status == 200 and response_body == "ok":
-            print("Sporočilo uspešno poslano!")
-        else:
-            print(f"Napaka od Slacka: {response_body}")
-
-    except pycurl.error as e:
-        print(f"Splošna pycurl napaka med perform(): {e}")
-    finally:
-        c_post.close()
-    c_post.setopt(c_post.URL, sys.argv[1])
-    c_post.setopt(c_post.POSTFIELDSIZE, len(payload))
-    c_post.setopt(c_post.POSTFIELDS, payload)
-    c_post.setopt(c_post.HTTPHEADER, ['Content-Type: application/json'])
+    c_post.setopt(c_post.URL, sys.argv[1]) 
+    c_post.setopt(c_post.POST, 1)  
+    c_post.setopt(c_post.POSTFIELDS, payload) 
+    c_post.setopt(c_post.HTTPHEADER, ["Content-Type: application/json"]) 
     c_post.setopt(c_post.WRITEDATA, buffer_post)
-    c_post.setopt(c_post.TIMEOUT, 30)
+    c_post.setopt(c_post.TIMEOUT, 30)  
+
     try:    
         c_post.perform()
 

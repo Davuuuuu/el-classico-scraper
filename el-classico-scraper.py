@@ -77,7 +77,7 @@ try:
 
     
     message = (
-        "*Dnevni jedilnik El Clasico {current_date}* 🍕\n\n"
+        "*Dnevni jedilnik El Clasico*{current_date} 🍕\n\n"
         "*Do 10 €:*\n" + "\n".join([f"• {i}" for i in food_items]) + "\n\n"
         "*Nad 10 €:*\n" + "\n".join([f"• {i}" for i in food_items_over_10]) + "\n\n"
         "Juha ali sladica: 2,50 €\nDober tek! 😋"

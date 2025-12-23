@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import re
+import re 
 
 url = "https://el-clasico.si/jedilnik-1/"
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
@@ -49,7 +49,24 @@ try:
         f.write("\n".join(food_items_over_10))
     print("\n\nSaved to food_items.txt")
     print("\n\nSaved to el_clasico_food_items_over_10.txt")
-    print("SLACK_WEBHOOK_URL")
+      
+
+    payload = {
+     "channel": "CHANNEL_ID",
+     "text": "test message"
+    }
+
+    headers = {
+      'Content-Type': 'application/json'
+    }
+
+
+    response = requests.post(
+      url="https://webhook.site/cfb9d233-7ead-4b03-8c98-99724eafae3a",
+      headers=headers,
+      json=payload,
+      timeout=60
+    )
 
 except Exception as e:
     print(f"Error: {e}")

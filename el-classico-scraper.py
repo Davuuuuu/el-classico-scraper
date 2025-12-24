@@ -7,7 +7,7 @@ import sys
 from datetime import datetime
 
 url_jedilnik = "https://el-clasico.si/jedilnik-1/"
-slack_webhook_url = sys.argv[1]  # Incoming Webhook URL
+slack_webhook_url = sys.argv[1]  
 
 buffer_get = BytesIO()
 c_get = pycurl.Curl()

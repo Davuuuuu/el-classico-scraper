@@ -174,8 +174,8 @@ try:
 
     payload = json.dumps({
         "channel": "#el-classico-scraper",
-        "blocks": blocks,
-        "text": f"Dnevni jedilnik El Clasico za {datum_naslov}" 
+        "text": f"Dnevni jedilnik El Clasico za {datum_naslov}",
+        "blocks": blocks
     }).encode('utf-8')
 
     buffer_post = BytesIO()

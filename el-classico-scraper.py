@@ -54,7 +54,6 @@ try:
                 except ValueError:
                     continue
 
-    # Sortiraj po ceni naraščajoče
     def get_price(item):
         match = price_regex.search(item)
         if match:
@@ -68,7 +67,6 @@ try:
     food_items.sort(key=get_price)
     food_items_over_10.sort(key=get_price)
 
-    # Priprava podatkov za tabelo: ločimo jed in ceno
     def loci_jed_cena(item):
         if " €" in item:
             deli = item.rsplit(" €", 1)
@@ -84,7 +82,6 @@ try:
             cena = ""
         return jed, cena
 
-    # Pretvorba v format za Block Kit tabelo
     def naredi_table_rows(items):
         rows = []
         for item in items:
@@ -98,14 +95,12 @@ try:
     rows_do_10 = naredi_table_rows(food_items)
     rows_nad_10 = naredi_table_rows(food_items_over_10)
 
-    # Datum
     dnevi_sl = {0: "PONEDELJEK", 1: "TOREK", 2: "SREDA", 3: "ČETRTEK", 4: "PETEK", 5: "SOBOTA", 6: "NEDELJA"}
     zdaj = datetime.now()
     ime_dneva = dnevi_sl[zdaj.weekday()]
     dan_mesec_leto = zdaj.strftime("%d.%m.%Y")
     datum_naslov = f"{ime_dneva}, {dan_mesec_leto}"
 
-    # Block Kit struktura
     blocks = [
         {
             "type": "header",
@@ -187,11 +182,10 @@ try:
         ]
     })
 
-    # Pošlji preko Incoming Webhook (podpira blocks!)
     payload = json.dumps({
         "channel": "#el-classico-scraper",
         "blocks": blocks,
-        "text": f"Dnevni jedilnik El Clasico za {datum_naslov}"  # fallback
+        "text": f"Dnevni jedilnik El Clasico za {datum_naslov}" 
     }).encode('utf-8')
 
     buffer_post = BytesIO()

@@ -172,16 +172,6 @@ try:
             "text": {"type": "mrkdwn", "text": "_Ni jedi nad 10 €._"}
         })
 
-    blocks.append({
-        "type": "context",
-        "elements": [
-            {
-                "type": "mrkdwn",
-                "text": "🍲 Juha ali sladica: *2,50 €*  😋  Dober tek!"
-            }
-        ]
-    })
-
     payload = json.dumps({
         "channel": "#el-classico-scraper",
         "blocks": blocks,

@@ -197,9 +197,9 @@ try:
         print(f"Odgovor: {response_body}")
 
         if post_status == 200:
-            print("✅ Jedilnik uspešno poslan na Slack z lepimi tabelami!")
+            print("Uspešno poslano")
         else:
-            print("❌ Napaka pri pošiljanju na Slack.")
+            print("Napaka pri pošiljanju")
 
     except pycurl.error as e:
         print(f"Pycurl POST napaka: {e}")

@@ -174,7 +174,7 @@ try:
 
     payload = json.dumps({
         "channel": "#el-classico-scraper",
-        "text": f"Dnevni jedilnik El Clasico za {datum_naslov}",
+        "text": f"DNEVNI JEDILNIK ZA {datum_naslov}",
         "blocks": blocks
     }).encode('utf-8')
 
